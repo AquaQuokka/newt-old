@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 import os
+import configparser
 
 icon_path = os.path.join(os.path.dirname(__file__), "newt.ico")
 
@@ -14,7 +15,7 @@ class Newt:
         self.root.iconbitmap(icon_path) # set icon
 
         # configure text widget
-        self.text = tk.Text(self.root, bg="#1E1E1E", fg="white", insertbackground="white", wrap="word")
+        self.text = tk.Text(self.root, bg="#1E1E1E", fg="white", insertbackground="white", wrap="word", font=("Consolas", 12))
 
         # configure menu bar
         self.menu_bar = tk.Menu(self.root, bg="#1E1E1E", fg="white", activebackground="#3A3A3A", activeforeground="white")
@@ -31,6 +32,8 @@ class Newt:
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Close Window", command=self.root.destroy)
         self.menu_bar.add_cascade(label="File", menu=self.file_menu)
+
+        self.menu_bar.configure(bg="#1E1E1E")
 
         # pack text widget
         self.text.pack(fill=tk.BOTH, expand=1)
