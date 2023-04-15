@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
 import os
-import configparser
 
 icon_path = os.path.join(os.path.dirname(__file__), "newt.ico")
 
@@ -27,11 +26,14 @@ class Newt:
         self.file_menu.add_command(label="Save As (Ctrl+S)", command=self.save_file_as)
         self.file_menu.add_command(label="Save (Ctrl+S)", command=self.save_file)
         self.file_menu.add_separator()
-        self.file_menu.add_command(label="Undo (Ctrl+Z)", command=self.text.edit_undo)
-        self.file_menu.add_command(label="Redo (Ctrl+Y)", command=self.text.edit_redo)
-        self.file_menu.add_separator()
         self.file_menu.add_command(label="Close Window", command=self.root.destroy)
         self.menu_bar.add_cascade(label="File", menu=self.file_menu)
+
+        # configure edit menu
+        self.edit_menu = tk.Menu(self.menu_bar, bg="#1E1E1E",fg="white", activebackground="#3A3A3A", activeforeground="white")
+        self.edit_menu.add_command(label="Undo (Ctrl+Z)", command=self.text.edit_undo)
+        self.edit_menu.add_command(label="Redo (Ctrl+Y)", command=self.text.edit_redo)
+        self.menu_bar.add_cascade(label="Edit", menu=self.edit_menu)
 
         self.menu_bar.configure(bg="#1E1E1E")
 
@@ -47,6 +49,7 @@ class Newt:
         # configure keyboard shortcuts
         self.root.bind("<Control-o>", self.open_file)
         self.root.bind("<Control-s>", self.save_file)
+        self.root.bind()
         self.root.bind("<Control-z>", self.text.edit_undo)
         self.root.bind("<Control-y>", self.text.edit_redo)
 
@@ -75,6 +78,6 @@ class Newt:
                 file.write(self.text.get("1.0", tk.END))
                 self.root.title(f"Newt - {file_path}")
 
+
     def run(self):
         self.root.mainloop()
-
