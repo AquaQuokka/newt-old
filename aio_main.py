@@ -9,5 +9,4 @@ async def main():
     await plugins.AsyncPlugin.run_all(app)
     await app.run_coroutine()
 
-if __name__ == "__main__":
-    asyncio.run(main())
+asyncio.run(main())

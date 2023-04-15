@@ -2,6 +2,11 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 import configparser
+import subprocess
+from tkinter import scrolledtext
+import traceback
+from contextlib import redirect_stdout
+from io import StringIO
 
 config = configparser.ConfigParser()
 themecfg = configparser.ConfigParser()
@@ -77,6 +82,11 @@ class Newt:
         self.edit_menu.add_command(label="Redo (Ctrl+Y)", command=self.text.edit_redo)
         self.menu_bar.add_cascade(label="Edit", menu=self.edit_menu)
 
+        # configure run menu
+        self.run_menu = tk.Menu(self.menu_bar, bg=f"{themecfg['run-menu']['background']}", fg=f"{themecfg['run-menu']['foreground']}", activebackground=f"{themecfg['run-menu']['active-background']}", activeforeground=f"{themecfg['run-menu']['active-background']}")
+        self.edit_menu.add_command(label="Run (Ctrl+R)", command=self.run_file)
+        self.menu_bar.add_cascade(label="Run", menu=self.run_menu)
+
         self.menu_bar.configure(bg=f"{themecfg['menu-bar']['background']}")
 
         # configure toolbar
@@ -88,6 +98,8 @@ class Newt:
         self.save_button.pack(side=tk.LEFT, padx=2, pady=2)
         self.saveas_button = tk.Button(self.toolbar, text="Save As", command=self.save_file_as, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
         self.saveas_button.pack(side=tk.LEFT, padx=2, pady=2)
+        self.run_button = tk.Button(self.toolbar, text="Run", command=self.run_file, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
+        self.run_button.pack(side=tk.LEFT, padx=2, pady=2)
         self.undo_button = tk.Button(self.toolbar, text="Undo", command=self.text.edit_undo, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
         self.undo_button.pack(side=tk.LEFT, padx=2, pady=2)
         self.redo_button = tk.Button(self.toolbar, text="Redo", command=self.text.edit_redo, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
@@ -103,6 +115,10 @@ class Newt:
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.text.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.config(command=self.text.yview)
+
+        # status bar
+        self.output = tk.Text(self.root, height=1, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", insertbackground=f"{themecfg['text']['insert-background']}", wrap=f"{themecfg['text']['wrap']}", font=(f"{themecfg['text']['font-family']}", int(themecfg['text']['font-size'])), tabstyle="wordprocessor")
+        self.output.pack(side=tk.BOTTOM, fill=tk.X)
         
         # configure keyboard shortcuts
         self.root.bind("<Control-o>", self.open_file)
@@ -110,6 +126,7 @@ class Newt:
         self.root.bind("<Alt-Shift-s>", self.save_file_as)
         self.root.bind("<Control-z>", self.text.edit_undo)
         self.root.bind("<Control-y>", self.text.edit_redo)
+        self.root.bind("<Control-r>", self.run_file)
 
     def open_file(self, event=None):
         file_path = filedialog.askopenfilename()
@@ -125,7 +142,7 @@ class Newt:
             self.save_file_as()
         else:
             # Otherwise, save the file to the current path
-            file_path = self.root.title()[8:]
+            file_path = self.root.title().replace("Newt - ", "")
             with open(file_path, "w") as file:
                 file.write(self.text.get("1.0", tk.END))
 
@@ -136,8 +153,66 @@ class Newt:
                 file.write(self.text.get("1.0", tk.END))
                 self.root.title(f"Newt - {file_path}")
 
+    """
+    def run_file(self, event=None):
+        file_path = self.root.title().replace("Newt - ", "")
+        try:
+            with open(file_path, "r") as f:
+                code = f.read()
+            proc = subprocess.Popen(['python', '-c', code], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = proc.communicate()
+            if proc.returncode != 0:
+                error_msg = f"Error running {file_path}:\n{stderr.decode()}"
+                self.show_output(error_msg)
+            else:
+                output = f"Output from {file_path}:\n{stdout.decode()}"
+                self.show_output(output)
+        except Exception as e:
+            error_msg = f"Error running {file_path}:\n{e}"
+            self.show_output(error_msg)
+
+    def run_file(self, event=None):
+        file_path = self.root.title().replace("Newt - ", "")
+        try:
+            with open(file_path, "r") as f:
+                code = f.read()
+
+            # Redirect stdout to a temporary buffer
+            import io
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                exec(code)
+
+            # Create a new window to display the output
+            output_window = tk.Toplevel(self.root)
+            output_window.title("Output")
+
+            # Create a read-only ScrolledText widget in the window
+            output_text = tk.Text(output_window, state="disabled")
+            output_text.pack(fill="both", expand=True)
+
+            # Enable editing temporarily to insert the output
+            output_text.configure(state="normal")
+            output_text.insert("1.0", buffer.getvalue())
+            output_text.configure(state="disabled")
+
+        except Exception as e:
+            traceback.print_exc()
+            tk.messagebox.showerror("Error", f"Error running {file_path}:\n\n{e}")
+
+    def show_output(self, output):
+        output_window = tk.Toplevel(self.root)
+        output_window.title("Output")
+        output_window.geometry("800x600")
+        output_text = self.text(output_window, font=("Consolas", 12), wrap="none")
+        output_text.pack(expand=True, fill="both")
+        output_text.insert("1.0", output)
+        output_text.config(state="disabled")
+    """
 
     def run(self):
+        self.root.title("Newt - Untitled")
+        self.root.geometry("800x600")
         self.root.mainloop()
 
     async def run_coroutine(self):
