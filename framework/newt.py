@@ -161,66 +161,8 @@ class Newt:
                 file.write(self.text.get("1.0", tk.END))
                 self.root.title(f"Newt - {file_path}")
 
-    """
-    def run_file(self, event=None):
-        file_path = self.root.title().replace("Newt - ", "")
-        try:
-            with open(file_path, "r") as f:
-                code = f.read()
-            proc = subprocess.Popen(['python', '-c', code], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = proc.communicate()
-            if proc.returncode != 0:
-                error_msg = f"Error running {file_path}:\n{stderr.decode()}"
-                self.show_output(error_msg)
-            else:
-                output = f"Output from {file_path}:\n{stdout.decode()}"
-                self.show_output(output)
-        except Exception as e:
-            error_msg = f"Error running {file_path}:\n{e}"
-            self.show_output(error_msg)
-
-    def run_file(self, event=None):
-        file_path = self.root.title().replace("Newt - ", "")
-        try:
-            with open(file_path, "r") as f:
-                code = f.read()
-
-            # Redirect stdout to a temporary buffer
-            import io
-            buffer = io.StringIO()
-            with redirect_stdout(buffer):
-                exec(code)
-
-            # Create a new window to display the output
-            output_window = tk.Toplevel(self.root)
-            output_window.title("Output")
-
-            # Create a read-only ScrolledText widget in the window
-            output_text = tk.Text(output_window, state="disabled")
-            output_text.pack(fill="both", expand=True)
-
-            # Enable editing temporarily to insert the output
-            output_text.configure(state="normal")
-            output_text.insert("1.0", buffer.getvalue())
-            output_text.configure(state="disabled")
-
-        except Exception as e:
-            traceback.print_exc()
-            tk.messagebox.showerror("Error", f"Error running {file_path}:\n\n{e}")
-
-    def show_output(self, output):
-        output_window = tk.Toplevel(self.root)
-        output_window.title("Output")
-        output_window.geometry("800x600")
-        output_text = self.text(output_window, font=("Consolas", 12), wrap="none")
-        output_text.pack(expand=True, fill="both")
-        output_text.insert("1.0", output)
-        output_text.config(state="disabled")
-    """
-
     def run(self):
-        self.root.geometry("800x600")
         self.root.mainloop()
 
-    async def start(self):
+    async def run_async(self):
         self.run()
