@@ -29,7 +29,10 @@ class Newt:
         self.root.iconbitmap(icon_path) # set icon
 
         # configure text widget
-        self.text = tk.Text(self.root, bg=f"{themecfg['text']['background']}", fg=f"{themecfg['text']['foreground']}", insertbackground=f"{themecfg['text']['insert-background']}", wrap=f"{themecfg['text']['wrap']}", font=(f"{themecfg['text']['font-family']}", int(themecfg['text']['font-size'])))
+        self.text = tk.Text(self.root, bg=f"{themecfg['text']['background']}", fg=f"{themecfg['text']['foreground']}", insertbackground=f"{themecfg['text']['insert-background']}", wrap=f"{themecfg['text']['wrap']}", font=(f"{themecfg['text']['font-family']}", int(themecfg['text']['font-size'])), tabstyle="wordprocessor")
+
+        self.tab_width = 36
+        self.text.configure(tabs=self.tab_width)
 
         # configure menu bar
         self.menu_bar = tk.Menu(self.root, bg=f"{themecfg['menu-bar']['background']}", fg=f"{themecfg['menu-bar']['foreground']}", activebackground=f"{themecfg['menu-bar']['active-background']}", activeforeground=f"{themecfg['menu-bar']['active-foreground']}")
