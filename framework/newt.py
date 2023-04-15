@@ -38,7 +38,7 @@ class Newt:
         # configure file menu
         self.file_menu = tk.Menu(self.menu_bar, bg=f"{themecfg['file-menu']['background']}", fg=f"{themecfg['file-menu']['foreground']}", activebackground=f"{themecfg['file-menu']['active-background']}", activeforeground=f"{themecfg['file-menu']['active-foreground']}")
         self.file_menu.add_command(label="Open (Ctrl+O)", command=self.open_file)
-        self.file_menu.add_command(label="Save As (Ctrl+S)", command=self.save_file_as)
+        self.file_menu.add_command(label="Save As (Alt+Shift+S)", command=self.save_file_as)
         self.file_menu.add_command(label="Save (Ctrl+S)", command=self.save_file)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Close Window", command=self.root.destroy)
@@ -64,7 +64,7 @@ class Newt:
         # configure keyboard shortcuts
         self.root.bind("<Control-o>", self.open_file)
         self.root.bind("<Control-s>", self.save_file)
-        self.root.bind()
+        self.root.bind("<Alt-Shift-s>", self.save_file_as)
         self.root.bind("<Control-z>", self.text.edit_undo)
         self.root.bind("<Control-y>", self.text.edit_redo)
 
