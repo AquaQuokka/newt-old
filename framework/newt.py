@@ -52,6 +52,22 @@ class Newt:
 
         self.menu_bar.configure(bg=f"{themecfg['menu-bar']['background']}")
 
+        # configure toolbar
+        self.toolbar = tk.Frame(self.root, bg=f"{themecfg['toolbar']['background']}")
+        self.toolbar.pack(side=tk.TOP, fill=tk.X)
+        self.open_button = tk.Button(self.toolbar, text="Open", command=self.open_file, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
+        self.open_button.pack(side=tk.LEFT, padx=2, pady=2)
+        self.save_button = tk.Button(self.toolbar, text="Save", command=self.save_file, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
+        self.save_button.pack(side=tk.LEFT, padx=2, pady=2)
+        self.saveas_button = tk.Button(self.toolbar, text="Save As", command=self.save_file_as, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
+        self.saveas_button.pack(side=tk.LEFT, padx=2, pady=2)
+        self.undo_button = tk.Button(self.toolbar, text="Undo", command=self.text.edit_undo, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
+        self.undo_button.pack(side=tk.LEFT, padx=2, pady=2)
+        self.redo_button = tk.Button(self.toolbar, text="Redo", command=self.text.edit_redo, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
+        self.redo_button.pack(side=tk.LEFT, padx=2, pady=2)
+        self.exit_button = tk.Button(self.toolbar, text="Exit", command=self.root.destroy, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
+        self.exit_button.pack(side=tk.RIGHT, padx=2, pady=2)
+
         # pack text widget
         self.text.pack(fill=tk.BOTH, expand=1)
 
