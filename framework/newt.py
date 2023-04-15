@@ -139,3 +139,6 @@ class Newt:
 
     def run(self):
         self.root.mainloop()
+
+    async def run_coroutine(self):
+        self.run()
