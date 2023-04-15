@@ -219,7 +219,6 @@ class Newt:
     """
 
     def run(self):
-        self.root.title("Newt - Untitled")
         self.root.geometry("800x600")
         self.root.mainloop()
 
