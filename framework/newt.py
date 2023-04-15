@@ -84,7 +84,9 @@ class Newt:
 
         # configure run menu
         self.run_menu = tk.Menu(self.menu_bar, bg=f"{themecfg['run-menu']['background']}", fg=f"{themecfg['run-menu']['foreground']}", activebackground=f"{themecfg['run-menu']['active-background']}", activeforeground=f"{themecfg['run-menu']['active-background']}")
+        """
         self.edit_menu.add_command(label="Run (Ctrl+R)", command=self.run_file)
+        """
         self.menu_bar.add_cascade(label="Run", menu=self.run_menu)
 
         self.menu_bar.configure(bg=f"{themecfg['menu-bar']['background']}")
@@ -98,8 +100,10 @@ class Newt:
         self.save_button.pack(side=tk.LEFT, padx=2, pady=2)
         self.saveas_button = tk.Button(self.toolbar, text="Save As", command=self.save_file_as, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
         self.saveas_button.pack(side=tk.LEFT, padx=2, pady=2)
+        """
         self.run_button = tk.Button(self.toolbar, text="Run", command=self.run_file, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
         self.run_button.pack(side=tk.LEFT, padx=2, pady=2)
+        """
         self.undo_button = tk.Button(self.toolbar, text="Undo", command=self.text.edit_undo, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
         self.undo_button.pack(side=tk.LEFT, padx=2, pady=2)
         self.redo_button = tk.Button(self.toolbar, text="Redo", command=self.text.edit_redo, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", activebackground=f"{themecfg['tools']['active-background']}", activeforeground=f"{themecfg['tools']['active-foreground']}")
@@ -126,7 +130,9 @@ class Newt:
         self.root.bind("<Alt-Shift-s>", self.save_file_as)
         self.root.bind("<Control-z>", self.text.edit_undo)
         self.root.bind("<Control-y>", self.text.edit_redo)
+        """
         self.root.bind("<Control-r>", self.run_file)
+        """
 
     def open_file(self, event=None):
         file_path = filedialog.askopenfilename()
