@@ -127,7 +127,9 @@ class Newt:
         # configure keyboard shortcuts
         self.root.bind("<Control-o>", self.open_file)
         self.root.bind("<Control-s>", self.save_file)
+        """
         self.root.bind("<Alt-Shift-s>", self.save_file_as)
+        """
         self.root.bind("<Control-z>", self.text.edit_undo)
         self.root.bind("<Control-y>", self.text.edit_redo)
         """
@@ -221,5 +223,5 @@ class Newt:
         self.root.geometry("800x600")
         self.root.mainloop()
 
-    async def run_coroutine(self):
+    async def start(self):
         self.run()
