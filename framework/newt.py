@@ -13,7 +13,31 @@ with open(config_path, "r") as f:
     config.read_file(f)
 
 theme_path = os.path.join(os.path.dirname(__file__), "themes")
-theme_path = os.path.join(theme_path, config["theme"]["default-theme"] + ".ini")
+
+
+if config["theme"]["default-theme"] not in os.listdir(theme_path):
+    print(f"Theme {config['theme']['default-theme']} not found in {theme_path}! Attempting to use dark theme...")
+
+    if os.path.exists(os.path.join(theme_path, "dark.ini")):
+        theme_path = os.path.join(theme_path, "dark.ini")
+
+    else:
+        print(f"Theme {os.path.join(theme_path, 'dark.ini')} is not in {theme_path} or does not exist! Attempting to use light theme...")
+        if os.path.exists(os.path.join(theme_path, "light.ini")):
+            theme_path = os.path.join(theme_path, "light.ini")
+        
+        else:
+            print(f"Theme {os.path.join(theme_path, 'light.ini')} is not in {theme_path} or does not exist! Attempting to use AMOLED theme...")
+
+            if os.path.exists(os.path.join(theme_path, "amoled.ini")):
+                theme_path = os.path.join(theme_path, "amoled.ini")
+            else:
+                print(f"Theme {os.path.join(theme_path, 'amoled.ini')} is not in {theme_path} or does not exist!")
+                print(f"Please install themes in {theme_path} to continue using Newt.")
+                exit()
+
+else:
+    theme_path = os.path.join(theme_path, config["theme"]["default-theme"] + ".ini")
 
 with open(theme_path, "r") as f:
     themecfg.read_file(f)
