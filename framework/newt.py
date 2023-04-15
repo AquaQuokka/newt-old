@@ -15,7 +15,7 @@ with open(config_path, "r") as f:
 theme_path = os.path.join(os.path.dirname(__file__), "themes")
 
 
-if config["theme"]["default-theme"] not in os.listdir(theme_path):
+if not os.path.exists(os.path.join(theme_path, config["theme"]["default-theme"] + ".ini")):
     print(f"Theme {config['theme']['default-theme']} not found in {theme_path}! Attempting to use dark theme...")
 
     if os.path.exists(os.path.join(theme_path, "dark.ini")):
