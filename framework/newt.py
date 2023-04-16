@@ -21,7 +21,7 @@ theme_path = os.path.join(os.path.dirname(__file__), "themes")
 
 
 if not os.path.exists(os.path.join(theme_path, config["theme"]["default-theme"] + ".ini")):
-    print(f"Theme {config['theme']['default-theme']} not found in {theme_path}! Attempting to use dark theme...")
+    print(f"Theme {config['theme']['default-theme']} is not in {theme_path} or does not exist! Attempting to use dark theme...")
 
     if os.path.exists(os.path.join(theme_path, "dark.ini")):
         theme_path = os.path.join(theme_path, "dark.ini")
@@ -32,7 +32,7 @@ if not os.path.exists(os.path.join(theme_path, config["theme"]["default-theme"] 
             theme_path = os.path.join(theme_path, "light.ini")
         
         else:
-            print(f"Theme {os.path.join(theme_path, 'light.ini')} is not in {theme_path} or does not exist! Attempting to use AMOLED theme...")
+            print(f"Theme {os.path.join(theme_path, 'light.ini')} is not in {theme_path} or does not exist! Attempting to use amoled theme...")
 
             if os.path.exists(os.path.join(theme_path, "amoled.ini")):
                 theme_path = os.path.join(theme_path, "amoled.ini")
@@ -70,7 +70,7 @@ class Newt:
         # configure file menu
         self.file_menu = tk.Menu(self.menu_bar, bg=f"{themecfg['file-menu']['background']}", fg=f"{themecfg['file-menu']['foreground']}", activebackground=f"{themecfg['file-menu']['active-background']}", activeforeground=f"{themecfg['file-menu']['active-foreground']}")
         self.file_menu.add_command(label="Open (Ctrl+O)", command=self.open_file)
-        self.file_menu.add_command(label="Save As (Alt+Shift+S)", command=self.save_file_as)
+        self.file_menu.add_command(label="Save As", command=self.save_file_as)
         self.file_menu.add_command(label="Save (Ctrl+S)", command=self.save_file)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Close Window", command=self.root.destroy)
@@ -83,11 +83,11 @@ class Newt:
         self.menu_bar.add_cascade(label="Edit", menu=self.edit_menu)
 
         # configure run menu
+        """
         self.run_menu = tk.Menu(self.menu_bar, bg=f"{themecfg['run-menu']['background']}", fg=f"{themecfg['run-menu']['foreground']}", activebackground=f"{themecfg['run-menu']['active-background']}", activeforeground=f"{themecfg['run-menu']['active-background']}")
-        """
         self.edit_menu.add_command(label="Run (Ctrl+R)", command=self.run_file)
-        """
         self.menu_bar.add_cascade(label="Run", menu=self.run_menu)
+        """
 
         self.menu_bar.configure(bg=f"{themecfg['menu-bar']['background']}")
 
@@ -121,8 +121,8 @@ class Newt:
         self.scrollbar.config(command=self.text.yview)
 
         # status bar
-        self.output = tk.Text(self.root, height=1, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", insertbackground=f"{themecfg['text']['insert-background']}", wrap=f"{themecfg['text']['wrap']}", font=(f"{themecfg['text']['font-family']}", int(themecfg['text']['font-size'])), tabstyle="wordprocessor")
-        self.output.pack(side=tk.BOTTOM, fill=tk.X)
+        self.status = tk.Text(self.root, height=1, bg=f"{themecfg['tools']['background']}", fg=f"{themecfg['tools']['foreground']}", insertbackground=f"{themecfg['text']['insert-background']}", wrap=f"{themecfg['text']['wrap']}", font=(f"{themecfg['text']['font-family']}", int(themecfg['text']['font-size'])), tabstyle="wordprocessor", state="disabled")
+        self.status.pack(side=tk.BOTTOM, fill=tk.X)
         
         # configure keyboard shortcuts
         self.root.bind("<Control-o>", self.open_file)
@@ -166,3 +166,6 @@ class Newt:
 
     async def run_async(self):
         self.run()
+
+if __name__ == "__main__":
+    Newt().run()
