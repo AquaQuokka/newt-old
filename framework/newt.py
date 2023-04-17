@@ -155,7 +155,13 @@ class Newt:
                 file.write(self.text.get("1.0", tk.END))
 
     def save_file_as(self, event=None):
-        file_path = filedialog.asksaveasfilename(defaultextension=".txt")
+        file_types = [("Text Files", "*.txt"), ("Python Files", "*.py"), ("JavaScript Files", "*.js"), 
+            ("HTML Files", "*.html"), ("CSS Files", "*.css"), ("Markdown Files", "*.md"),
+            ("YAML Files", "*.yaml"), ("JSON Files", "*.json"), ("XML Files", "*.xml"), 
+            ("All Files", "*.*")]
+        
+        file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=file_types)
+
         if file_path:
             with open(file_path, "w") as file:
                 file.write(self.text.get("1.0", tk.END))
