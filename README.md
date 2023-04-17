@@ -10,7 +10,6 @@ Newt is a lightweight community-made text editor made in Python.
 Features Include:
 
 - Theme Support
-- Plugin APIs (Deprecated)
 - Build Overrides
 - Buildsets
 
