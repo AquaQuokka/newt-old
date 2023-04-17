@@ -77,34 +77,16 @@ This is a theme that can be used to customize the appearance of Newt. This theme
 ```py
 from framework import newt as fw
 
-class MyOverride(fw.Newt):
-
-    def my_override(self):
+class AwesomeOverride(fw.Newt):
+    def awesome_override(self):
         ...
 
     def run(self):
-        self.my_override()
+        self.awesome_override()
         self.root.mainloop()
 
 if __name__ == "__main__":
-    MyOverride().run()
-```
-
-Here is a simple build override that changes the title of Newt from "Newt" to "My Override":
-
-```py
-from framework import newt as fw
-
-class MyOverride(fw.Newt):
-    def my_override(self):
-        self.root.title("My Override")
-
-    def run(self):
-        self.my_override()
-        self.root.mainloop()
-
-if __name__ == "__main__":
-    MyOverride().run()
+    AwesomeOverride().run()
 ```
 
 4. Instead of running `newt.py`, `main.py`, or `aiomain.py`, instead run your build override file.
